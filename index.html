@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan untuk Indras Widanti</title>
+    <!-- Version: 2.0 | Updated: Feb 5, 2026 11:42 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600;700&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            min-height: 100vh;
+            position: fixed;
+            width: 100%;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            color: white;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        /* Main Container */
+        .main {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .content {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Clock Section */
+        .clock-section {
+            text-align: center;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .clock-section h1 {
+            font-size: 4rem;
+            color: white;
+            font-weight: 100;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .date-section {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            font-weight: 300;
+        }
+
+        /* Notification Card */
+        .notification {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translateX(-100vw);
+            opacity: 0;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+            animation: slideIn 0.5s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100vw);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification.blink {
+            animation: blink 1.2s infinite ease;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .notification:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .notif-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .notif-app {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #555;
+        }
+
+        .whatsapp-icon {
+            background: linear-gradient(190deg, #72e587, #23a542);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .notif-time {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .notif-sender {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .notif-message {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Button */
+        .btn-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e3c72;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            animation: bounce 1.2s infinite ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            animation: none;
+        }
+
+        .btn.hidden {
+            display: none;
+        }
+
+        /* Message Card */
+        .message-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px 30px;
+            margin: 20px 0;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message-card.show {
+            display: block;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .message-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(45deg);
+            animation: shine 3s infinite;
+        }
+
+        @keyframes shine {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+
+        /* Logo */
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-container img {
+            width: 120px;
+            height: auto;
+            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+        }
+
+        .photo-container {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .photo-frame {
+            display: inline-block;
+            padding: 8px;
+            background: linear-gradient(135deg, #1e3c72 0%, #7e22ce 100%);
+            border-radius: 50%;
+            box-shadow: 0 10px 40px rgba(30, 60, 114, 0.4);
+        }
+
+        .photo-frame img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid white;
+        }
+
+        .message-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .message-header h2 {
+            font-family: 'Amiri', serif;
+            font-size: 1.8rem;
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .message-header .bismillah {
+            font-family: 'Amiri', serif;
+            font-size: 1.5rem;
+            color: #7e22ce;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .message-body {
+            font-size: 1rem;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .message-body p {
+            margin-bottom: 15px;
+        }
+
+        .message-body .highlight {
+            font-family: 'Amiri', serif;
+            font-size: 1.2rem;
+            color: #7e22ce;
+            font-weight: 700;
+            text-align: center;
+            margin: 25px 0;
+            padding: 15px;
+            background: rgba(126, 34, 206, 0.1);
+            border-radius: 15px;
+            border-left: 4px solid #7e22ce;
+        }
+
+        .doa-list {
+            margin: 25px 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .doa-list li {
+            padding: 15px 20px;
+            margin: 10px 0;
+            background: linear-gradient(135deg, rgba(30, 60, 114, 0.1) 0%, rgba(126, 34, 206, 0.1) 100%);
+            border-radius: 15px;
+            border-left: 4px solid #1e3c72;
+            font-size: 0.95rem;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+
+        .doa-list li:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+        }
+
+        .doa-list li::before {
+            content: '🤲';
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        .team-signature {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(30, 60, 114, 0.2);
+        }
+
+        .team-signature p {
+            color: #555;
+            font-size: 0.95rem;
+            margin: 5px 0;
+        }
+
+        .team-signature .team-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-top: 10px;
+        }
+
+        /* Photo Gallery Styles */
+        .photo-gallery {
+            margin: 30px 0;
+            padding: 30px 20px;
+            display: none;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.1), rgba(255, 105, 180, 0.1));
+            border-radius: 25px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-gallery::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 192, 203, 0.15) 0%, transparent 70%);
+            animation: floatingGlow 8s ease-in-out infinite;
+        }
+
+        @keyframes floatingGlow {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(10%, 10%) rotate(120deg); }
+            66% { transform: translate(-10%, 5%) rotate(240deg); }
+        }
+
+        .gallery-title {
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ff1493, #ff69b4, #ff1493);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 30px rgba(255, 105, 180, 0.3);
+            animation: titlePulse 2s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .gallery-container {
+            position: relative;
+            width: 100%;
+            height: 450px;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 15px 60px rgba(255, 105, 180, 0.4),
+                        0 0 30px rgba(255, 20, 147, 0.2);
+            border: 3px solid rgba(255, 182, 193, 0.3);
+            z-index: 1;
+        }
+
+        .gallery-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, 
+                transparent 0%, 
+                rgba(255, 105, 180, 0.05) 50%, 
+                transparent 100%);
+            pointer-events: none;
+        }
+
+        .gallery-slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out;
+            transform: scale(1);
+        }
+
+        .gallery-slide.active {
+            opacity: 1;
+            animation: zoomIn 1.2s ease-out;
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(1.1);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .gallery-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            filter: brightness(0.95) contrast(1.05);
+        }
+
+        .gallery-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 15px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .gallery-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 182, 193, 0.6);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .gallery-dot:hover {
+            background: rgba(255, 105, 180, 0.8);
+            transform: scale(1.2);
+        }
+
+        .gallery-dot.active {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            transform: scale(1.4);
+            box-shadow: 0 0 15px rgba(255, 20, 147, 0.6);
+        }
+
+        .gallery-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.95), rgba(255, 105, 180, 0.95));
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: white;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
+        }
+
+        .gallery-nav:hover {
+            background: linear-gradient(135deg, #ff1493, #ff69b4);
+            transform: translateY(-50%) scale(1.15);
+            box-shadow: 0 8px 30px rgba(255, 20, 147, 0.6);
+        }
+
+        .gallery-nav.prev {
+            left: 15px;
+        }
+
+        .gallery-nav.next {
+            right: 15px;
+        }
+
+        .gallery-counter {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, rgba(255, 20, 147, 0.9), rgba(255, 105, 180, 0.9));
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            z-index: 10;
+            box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* Floating Hearts Animation */
+        .floating-heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0;
+            animation: floatHeart 6s infinite;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery-container {
+                height: 300px;
+            }
+
+            .gallery-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+        }
+
+        /* WhatsApp Button */
+        .wa-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #72e587, #23a542);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(35, 165, 66, 0.4);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .wa-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(35, 165, 66, 0.6);
+        }
+
+        .wa-button::before {
+            content: '📱 ';
+            margin-right: 8px;
+        }
+
+        /* Typing Animation */
+        .typing {
+            display: inline-block;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1em;
+            background-color: #333;
+            margin-left: 2px;
+            animation: blink-cursor 0.8s infinite;
+        }
+
+        @keyframes blink-cursor {
+            0%, 49% { opacity: 1; }
+            50%, 100% { opacity: 0; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .clock-section h1 {
+                font-size: 3rem;
+            }
+
+            .message-card {
+                padding: 30px 20px;
+            }
+
+            .photo-frame img {
+                width: 150px;
+                height: 150px;
+            }
+
+            .message-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .btn, .wa-button {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+
+            .logo-container img {
+                width: 100px;
+            }
+        }
+
+        /* Snow Animation */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            z-index: 9999;
+            user-select: none;
+            cursor: default;
+            animation-name: snowfall;
+            animation-duration: 10s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes snowfall {
+            0% {
+                transform: translateY(0vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.8;
+            }
+        }
+
+        /* Confetti Styles */
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .snowflake:nth-of-type(0) { left: 1%; animation-delay: 0s; font-size: 1em; }
+        .snowflake:nth-of-type(1) { left: 10%; animation-delay: 1s; font-size: 1.2em; }
+        .snowflake:nth-of-type(2) { left: 20%; animation-delay: 0.5s; font-size: 0.8em; }
+        .snowflake:nth-of-type(3) { left: 30%; animation-delay: 2s; font-size: 1.5em; }
+        .snowflake:nth-of-type(4) { left: 40%; animation-delay: 1.5s; font-size: 1em; }
+        .snowflake:nth-of-type(5) { left: 50%; animation-delay: 0.8s; font-size: 1.3em; }
+        .snowflake:nth-of-type(6) { left: 60%; animation-delay: 2.5s; font-size: 0.9em; }
+        .snowflake:nth-of-type(7) { left: 70%; animation-delay: 1.2s; font-size: 1.1em; }
+        .snowflake:nth-of-type(8) { left: 80%; animation-delay: 0.3s; font-size: 1.4em; }
+        .snowflake:nth-of-type(9) { left: 90%; animation-delay: 1.8s; font-size: 1em; }
+        .snowflake:nth-of-type(10) { left: 95%; animation-delay: 0.6s; font-size: 1.2em; }
+
+        /* SweetAlert Custom Style */
+        .swal2-popup {
+            border-radius: 20px !important;
+        }
+
+        .swal2-confirm {
+            background: linear-gradient(135deg, #1e3c72, #7e22ce) !important;
+            border-radius: 50px !important;
+            padding: 12px 40px !important;
+        }
+
+        /* Gift Box Styles */
+        .gift-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 40px 0;
+            perspective: 1000px;
+        }
+
+        .gift-box {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        /* Shadow beneath the box */
+        .gift-container::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            width: 120px;
+            height: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            filter: blur(8px);
+            transform: translateZ(-100px);
+        }
+
+        .gift-box.locked {
+            cursor: not-allowed;
+            filter: grayscale(0.5) contrast(0.8);
+        }
+
+        .gift-box:hover:not(.locked) {
+            transform: rotateY(20deg) rotateX(10deg);
+        }
+
+        .gift-box .side {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, #9333ea, #3b82f6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+        }
+
+        .gift-box .front  { transform: translateZ(75px); }
+        .gift-box .back   { transform: rotateY(180deg) translateZ(75px); }
+        .gift-box .left   { transform: rotateY(-90deg) translateZ(75px); }
+        .gift-box .right  { transform: rotateY(90deg) translateZ(75px); }
+        
+        /* Lid is slightly larger */
+        .gift-box .top { 
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            left: -5px;
+            top: -5px;
+            background: #9333ea;
+            transform: rotateX(90deg) translateZ(80px); 
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: top;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+        
+        .gift-box .bottom { 
+            transform: rotateX(-90deg) translateZ(75px); 
+            background: #1e3c72;
+        }
+
+        /* Ribbon - More sophisticated look */
+        .ribbon-v, .ribbon-h {
+            position: absolute;
+            background: linear-gradient(to right, #ffd700, #ffec8b, #ffd700);
+            box-shadow: 0 0 5px rgba(0,0,0,0.2);
+        }
+
+        .ribbon-v {
+            width: 35px;
+            height: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .ribbon-h {
+            width: 100%;
+            height: 35px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Bow on top */
+        .bow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            z-index: 20;
+        }
+
+        .bow::before, .bow::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border: 8px solid #ffd700;
+            border-radius: 50% 50% 0 50%;
+            background: transparent;
+        }
+
+        .bow::before {
+            transform: rotate(45deg);
+            left: -15px;
+        }
+
+        .bow::after {
+            transform: rotate(225deg);
+            right: -15px;
+        }
+
+        /* Lid opening animation refined */
+        .gift-box.open .top {
+            transform: rotateX(90deg) translateZ(80px) rotateX(-120deg) translateY(-20px);
+        }
+
+        /* Countdown Style */
+        .countdown-container {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .countdown-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .countdown-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .gift-hint {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-style: italic;
+        }
+
+        /* Padlock for locked state */
+        .lock-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateZ(80px);
+            font-size: 3rem;
+            color: white;
+            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+            pointer-events: none;
+        }
+
+        .gift-box.shake {
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotateY(0); }
+            25% { transform: rotateY(-10deg); }
+            75% { transform: rotateY(10deg); }
+        }
+
+        /* Code Validation Modal */
+        .code-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .code-modal-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .code-modal {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.95));
+            border-radius: 30px;
+            padding: 40px 30px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .code-modal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .code-modal-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+
+        .code-modal-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1e3c72;
+            margin-bottom: 10px;
+        }
+
+        .code-modal-subtitle {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .code-input-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .code-input {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 1.3rem;
+            text-align: center;
+            border: 3px solid #e0e0e0;
+            border-radius: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: white;
+        }
+
+        .code-input:focus {
+            border-color: #7e22ce;
+            box-shadow: 0 0 0 4px rgba(126, 34, 206, 0.1);
+            transform: scale(1.02);
+        }
+
+        .code-input.error {
+            border-color: #ff4444;
+            animation: shakeInput 0.5s ease;
+        }
+
+        @keyframes shakeInput {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .code-input.success {
+            border-color: #4caf50;
+            background: rgba(76, 175, 80, 0.1);
+        }
+
+        .code-submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1e3c72, #7e22ce);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(30, 60, 114, 0.3);
+        }
+
+        .code-submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(30, 60, 114, 0.4);
+        }
+
+        .code-submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .code-error-message {
+            color: #ff4444;
+            font-size: 0.95rem;
+            margin-top: 10px;
+            min-height: 24px;
+            font-weight: 500;
+        }
+
+        .code-hint {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            color: #666;
+            display: none;
+        }
+
+        .code-hint.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .code-attempts {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .code-modal {
+                padding: 30px 20px;
+            }
+
+            .code-modal-title {
+                font-size: 1.5rem;
+            }
+
+            .code-input {
+                font-size: 1.1rem;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loader"></div>
+        <div class="loading-text">Memuat pesan...</div>
+    </div>
+
+    <!-- Audio -->
+    <audio id="bgAudio" loop>
+        <source src="https://dekatutorial.github.io/Sezairi%20-%20It's%20You.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="notifSound" src="https://dekatutorial.github.io/notif.mp3"></audio>
+
+    <!-- Main Container -->
+    <div class="main">
+        <div class="content">
+            <!-- Clock Section -->
+            <div class="clock-section">
+                <h1 id="clock">00:00</h1>
+                <div class="date-section">
+                    <p id="date">Loading...</p>
+                </div>
+            </div>
+
+            <!-- Gift Box Section -->
+            <div class="gift-container" id="giftContainer">
+                <p class="gift-hint" id="giftHint">Ada kado spesial nih buat kamu...</p>
+                <div class="gift-box" id="giftBox" onclick="handleGiftClick()">
+                    <div class="side front"><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
+                    <div class="side back"><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
+                    <div class="side left"><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
+                    <div class="side right"><div class="ribbon-v"></div><div class="ribbon-h"></div></div>
+                    <div class="side top"><div class="ribbon-v"></div><div class="ribbon-h"></div><div class="bow"></div></div>
+                    <div class="side bottom"></div>
+                    <div class="lock-icon" id="lockIcon">
+                        <i class="material-icons-sharp">lock</i>
+                    </div>
+                </div>
+
+                <div class="countdown-container" id="countdownContainer">
+                    <p>Dibuka dalam:</p>
+                    <div class="countdown-timer">
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="days">00</span>
+                            <span class="countdown-label">Hari</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="hours">00</span>
+                            <span class="countdown-label">Jam</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="minutes">00</span>
+                            <span class="countdown-label">Menit</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-value" id="seconds">00</span>
+                            <span class="countdown-label">Detik</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- First Notification -->
+            <div class="notification notification1 blink" id="notif1" style="display: none;" onclick="openFirstNotif()">
+                <div class="notif-header">
+                    <div class="notif-app">
+                        <div class="whatsapp-icon">
+                            <i class="material-icons-sharp">whatsapp</i>
+                        </div>
+                        <span style="font-weight: 500;">WHATSAPP</span>
+                    </div>
+                    <div class="notif-time">Now</div>
+                </div>
+                <div class="notif-sender">Aa My Hubby</div>
+                <div class="notif-message">Assalamu'alaikum, ada pesan penting nih!</div>
+            </div>
+
+            <!-- Second Notification (Hidden initially) -->
+            <div class="notification notification2" id="notif2">
+                <div class="notif-header">
+                    <div class="notif-app">
+                        <div class="whatsapp-icon">
+                            <i class="material-icons-sharp">whatsapp</i>
+                        </div>
+                        <span style="font-weight: 500;">WHATSAPP</span>
+                    </div>
+                    <div class="notif-time">Now</div>
+                </div>
+                <div class="notif-sender">Aa My Hubby</div>
+                <div class="notif-message" id="personalMessage"></div>
+            </div>
+
+            <!-- Button Start -->
+            <div class="btn-container">
+                <button class="btn hidden" id="btnStart" onclick="openFirstNotif()">
+                    Buka Pesan 📬
+                </button>
+                <button class="btn hidden" id="btnOpen">
+                    Buka Pesannya
+                </button>
+            </div>
+
+            <!-- Code Validation Modal -->
+            <div class="code-modal-overlay" id="codeModalOverlay">
+                <div class="code-modal">
+                    <div class="code-modal-icon">🔐</div>
+                    <h2 class="code-modal-title">Kode Akses Rahasia</h2>
+                    <p class="code-modal-subtitle">
+                        Psst... hanya kamu yang punya kode akses khusus ini! 🤫<br>
+                        Masukkan kode rahasia untuk membuka pesan spesialnya~
+                    </p>
+                    
+                    <div class="code-input-container">
+                        <input 
+                            type="text" 
+                            id="codeInput" 
+                            class="code-input" 
+                            placeholder="MASUKKAN KODE"
+                            maxlength="20"
+                            autocomplete="off"
+                        >
+                    </div>
+                    
+                    <button class="code-submit-btn" id="codeSubmitBtn" onclick="validateCode()">
+                        Buka Pesan 🎁
+                    </button>
+                    
+                    <div class="code-error-message" id="codeErrorMessage"></div>
+                    
+                    <div class="code-hint" id="codeHint">
+                        💡 <strong>Hint:</strong> Nama + tahun kelahiran (contoh: ARIF1992)
+                    </div>
+                    
+                    <div class="code-attempts" id="codeAttempts"></div>
+                </div>
+            </div>
+
+            <!-- Message Card (Hidden initially) -->
+
+            <div class="message-card" id="messageCard">
+                <div class="photo-container">
+                    <div class="photo-frame">
+                        <img src="asset/jpg/indras.jpg" alt="Indras Widanti">
+                    </div>
+                </div>
+
+                <div class="message-header">
+                    <div class="bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+                    <h2>Untuk: Indras Widanti - Istriku Tercinta</h2>
+                </div>
+
+                <div class="message-body">
+                    <p id="greetingText"></p>
+
+                    <p id="typingText" class="typing"></p>
+
+                    <div class="highlight" id="quranVerse" style="display: none;">
+                        <div style="font-family: 'Amiri', serif; font-size: 1.4rem; margin-bottom: 15px; direction: rtl;">
+                            وَمَن يَشْكُرْ فَإِنَّمَا يَشْكُرُ لِنَفْسِهِ
+                        </div>
+                        "Dan barangsiapa bersyukur, maka sesungguhnya ia bersyukur untuk dirinya sendiri"
+                        <br><small>(QS. Luqman: 12)</small>
+                    </div>
+
+                    <p id="closingText" style="display: none;">
+                        Semoga Allah SWT senantiasa memberikan keberkahan dalam setiap langkahmu, 
+                        melimpahkan kesehatan, kebahagiaan, dan kesuksesan dalam segala urusan dunia dan akhirat. 
+                        Barakallahu fiik, Sayangku. ❤️✨
+                    </p>
+
+                    <ul class="doa-list" id="doaList" style="display: none;">
+                        <li>Semoga Allah SWT senantiasa menjaga dan melindungimu</li>
+                        <li>Semoga kita selalu diberikan kekuatan untuk saling menjaga dan mencintai</li>
+                        <li>Semoga dimudahkan dalam setiap urusan dan dimampukan menjadi pribadi yang bermanfaat</li>
+                        <li>Semoga cinta kita menjadi jalan menuju ridha Allah SWT</li>
+                    </ul>
+
+                    <p id="thankYouText" style="display: none;">
+                        Jazakillahu khairan untuk setiap kebaikan yang kamu berikan. 
+                        Semoga kita terus tumbuh bersama dalam cinta dan ridha Allah SWT hingga akhir waktu. 
+                        You're my everything... 💜✨
+                    </p>
+
+                    <!-- Photo Gallery -->
+                    <div class="photo-gallery" id="photoGallery" style="display: none;">
+                        <h3 class="gallery-title">� Kenangan Terindah Kita Bersama 💕</h3>
+                        <div class="gallery-container">
+                            <div class="gallery-counter" id="galleryCounter">1 / 25</div>
+                            
+                            <div class="gallery-slide active">
+                                <img src="asset/jpg/indras.jpg" alt="Kenangan Bersama 1">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/080920132983.jpg" alt="Kenangan Bersama 2">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/080920132984.jpg" alt="Kenangan Bersama 3">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/080920132987.jpg" alt="Kenangan Bersama 4">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/464094_520929027970655_110840835_o.jpg" alt="Kenangan Bersama 5">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/467114_520927551304136_1311314331_o.jpg" alt="Kenangan Bersama 6">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/472979_520928274637397_1605852260_o.jpg" alt="Kenangan Bersama 7">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/473158_520926911304200_1323371928_o.jpg" alt="Kenangan Bersama 8">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/901136_520925141304377_515249683_o.jpg" alt="Kenangan Bersama 9">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/904768_520930074637217_2050169206_o.jpg" alt="Kenangan Bersama 10">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/914112_520929684637256_575723935_o.jpg" alt="Kenangan Bersama 11">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/919564_520926581304233_2047310858_o.jpg" alt="Kenangan Bersama 12">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/920354_520927201304171_1512459634_o.jpg" alt="Kenangan Bersama 13">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/DSCF2974.jpg" alt="Kenangan Bersama 14">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/DSCF2979.jpg" alt="Kenangan Bersama 15">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/DSCF2982.jpg" alt="Kenangan Bersama 16">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/DSCF3002 copy.jpg" alt="Kenangan Bersama 17">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/DSCF5211.jpg" alt="Kenangan Bersama 18">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/DSCF5219.jpg" alt="Kenangan Bersama 19">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/IMG_3668.jpg" alt="Kenangan Bersama 20">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/IMG_3672.jpg" alt="Kenangan Bersama 21">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/IMG_3682.jpg" alt="Kenangan Bersama 22">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/IMG_3702.jpg" alt="Kenangan Bersama 23">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/IMG_3743.jpg" alt="Kenangan Bersama 24">
+                            </div>
+                            <div class="gallery-slide">
+                                <img src="asset/jpg/IMG_3759.jpg" alt="Kenangan Bersama 25">
+                            </div>
+                            
+                            <button class="gallery-nav prev" onclick="changeSlide(-1)">❮</button>
+                            <button class="gallery-nav next" onclick="changeSlide(1)">❯</button>
+                            
+                            <div class="gallery-controls" id="galleryDots">
+                                <!-- Dots will be generated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="team-signature" id="teamSignature" style="display: none;">
+                        <p>Dengan penuh rasa syukur, cinta dan doa,</p>
+                        <p class="team-name">💜 Suamimu yang mencintaimu</p>
+                        <p style="margin-top: 15px; font-size: 0.85rem; color: #888;">
+                            "Tumbuh Bersama, Bahagia Selamanya"
+                        </p>
+                    </div>
+                </div>
+
+                <!-- WhatsApp Button - Moved outside message-body to appear at the very end -->
+                <div style="text-align: center; padding: 20px 30px;" id="waButtonContainer" style="display: none;">
+                    <a href="#" class="wa-button" id="waButton" onclick="sendWhatsApp()">
+                        Kirim Konfirmasi via WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Snow Animation -->
+    <div id="snowContainer"></div>
+
+    <script>
+        let userName = '';
+        const whatsappNumber = '6285213081309';
+        let typingIndex = 0;
+        let typingSpeed = 80;
+        let fullText = '';
+        const targetDate = new Date('2026-02-05T00:00:00').getTime();
+        let countdownInterval;
+        let isGiftUnlocked = false;
+        
+        // Code validation variables
+        const SECRET_CODE = 'INDRAS1993'; // Change this to your desired code
+        let codeAttempts = 0;
+        const MAX_ATTEMPTS = 5;
+        let isCodeValidated = false;
+        
+        const errorMessages = [
+            'Hmm... kayaknya bukan itu deh 🤔',
+            'Coba inget-inget lagi... pasti kamu tau! 💭',
+            'Hampir! Tapi belum bener nih 😅',
+            'Yuk semangat, coba lagi! 💪',
+            'Jangan menyerah ya! Kamu pasti bisa! ✨'
+        ];
+
+        // Clock function
+
+        // Clock function
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
+        }
+
+        // Date function
+        function updateDate() {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
+                          'August', 'September', 'October', 'November', 'December'];
+            const now = new Date();
+            const dayName = days[now.getDay()];
+            const date = now.getDate();
+            const monthName = months[now.getMonth()];
+            document.getElementById('date').textContent = `${dayName}, ${date} ${monthName}`;
+        }
+
+        // Typing animation
+        function typeWriter() {
+            if (typingIndex < fullText.length) {
+                document.getElementById('typingText').textContent += fullText.charAt(typingIndex);
+                typingIndex++;
+                setTimeout(typeWriter, typingSpeed);
+            } else {
+                // Remove cursor after typing is done
+                document.getElementById('typingText').classList.remove('typing');
+                
+                // Show other elements after typing is complete
+                setTimeout(() => {
+                    document.getElementById('quranVerse').style.display = 'block';
+                    setTimeout(() => {
+                        document.getElementById('closingText').style.display = 'block';
+                        setTimeout(() => {
+                            document.getElementById('doaList').style.display = 'block';
+                            setTimeout(() => {
+                                document.getElementById('thankYouText').style.display = 'block';
+                                setTimeout(() => {
+                                    // Show photo gallery
+                                    document.getElementById('photoGallery').style.display = 'block';
+                                    startGalleryAutoplay();
+                                    setTimeout(() => {
+                                        document.getElementById('teamSignature').style.display = 'block';
+                                        // Show WhatsApp button last and start snow animation
+                                        setTimeout(() => {
+                                            document.getElementById('waButtonContainer').style.display = 'block';
+                                            createSnowflakes();
+                                        }, 500);
+                                    }, 500);
+                                }, 500);
+                            }, 500);
+                        }, 500);
+                    }, 500);
+                }, 500);
+            }
+        }
+
+        // Initialize
+        window.addEventListener('load', function() {
+            updateClock();
+            updateDate();
+            setInterval(updateClock, 1000);
+            startCountdown();
+
+            setTimeout(function() {
+                document.getElementById('loadingScreen').classList.add('hidden');
+                // document.getElementById('notif1').classList.add('show'); // Will be triggered by gift open
+            }, 1500);
+        });
+
+        // Countdown Logic
+        function startCountdown() {
+            const updateTimer = () => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    isGiftUnlocked = true;
+                    document.getElementById('countdownContainer').style.display = 'none';
+                    document.getElementById('lockIcon').innerHTML = '<i class="material-icons-sharp">lock_open</i>';
+                    document.getElementById('giftBox').classList.remove('locked');
+                    document.getElementById('giftHint').textContent = 'Klik kado ini untuk membukanya! ✨';
+                    document.getElementById('giftHint').style.color = '#ffd700';
+                    document.getElementById('giftHint').style.fontWeight = 'bold';
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = String(days).padStart(2, '0');
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+                isGiftUnlocked = false;
+                document.getElementById('giftBox').classList.add('locked');
+            };
+
+            updateTimer();
+            countdownInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Handle Gift Click
+        function handleGiftClick() {
+            const giftBox = document.getElementById('giftBox');
+            
+            if (!isGiftUnlocked) {
+                giftBox.classList.add('shake');
+                setTimeout(() => giftBox.classList.remove('shake'), 500);
+                Swal2.fire({
+                    title: 'Sabar ya! 😊',
+                    text: 'Kadonya baru boleh dibuka pas hari ulang tahun Indras tanggal 07 Februari nanti.',
+                    icon: 'info',
+                    confirmButtonText: 'Oke'
+                });
+                return;
+            }
+
+            // If unlocked
+            giftBox.classList.add('open');
+            document.getElementById('lockIcon').style.display = 'none';
+            createConfetti();
+            
+            // Play open sound if you have one, or just trigger next steps
+            setTimeout(() => {
+                document.getElementById('giftContainer').style.display = 'none';
+                document.getElementById('notif1').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('notif1').classList.add('show');
+                }, 100);
+                document.getElementById('notifSound').play().catch(e => console.log('Audio autoplay prevented'));
+            }, 1200);
+        }
+
+        // Create Confetti Function
+        function createConfetti() {
+            const container = document.querySelector('.main');
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffd700'];
+            
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.left = '50%';
+                confetti.style.top = '40%'; // Adjusted for gift box position
+                
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = 5 + Math.random() * 15;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity - 8; // Higher upward burst
+                
+                container.appendChild(confetti);
+                
+                let posX = 0;
+                let posY = 0;
+                let currentVx = vx;
+                let currentVy = vy;
+                const gravity = 0.2;
+                
+                const animate = () => {
+                    posX += currentVx;
+                    posY += currentVy;
+                    currentVy += gravity;
+                    currentVx *= 0.98; // Friction
+                    
+                    confetti.style.transform = `translate(${posX}px, ${posY}px) rotate(${posX}deg)`;
+                    
+                    if (posY < 500) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        confetti.remove();
+                    }
+                };
+                
+                requestAnimationFrame(animate);
+            }
+        }
+
+        // SweetAlert config
+        const Swal2 = Swal.mixin({
+            confirmButtonColor: '#1e3c72',
+            allowOutsideClick: false,
+            customClass: {
+                popup: 'swal2-popup'
+            }
+        });
+
+        // Open first notification
+        async function openFirstNotif() {
+            document.getElementById('btnStart').classList.add('hidden');
+            
+            const { value: name } = await Swal2.fire({
+                title: 'Assalamu\'alaikum! 👋',
+                text: 'Siapa nih yang mau buka pesannya?',
+                input: 'text',
+                inputPlaceholder: 'Nama kamu...',
+                confirmButtonText: 'Kirim',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'Isi dulu dong namanya!';
+                    }
+                }
+            });
+
+            if (name) {
+                userName = name;
+                document.getElementById('btnStart').style.display = 'none';
+                
+                // Play notification sound
+                document.getElementById('notifSound').play();
+                
+                // Show second notification
+                setTimeout(() => {
+                    const personalMsg = `Wa'alaikumsalam ${userName}! Ada pesan spesial buat Indras nih 💜`;
+                    document.getElementById('personalMessage').textContent = personalMsg;
+                    document.getElementById('notif1').style.display = 'none';
+                    document.getElementById('notif2').classList.add('show', 'blink');
+                    document.getElementById('btnOpen').classList.remove('hidden');
+                    
+                    // Update greeting in message card
+                    document.getElementById('greetingText').textContent = 
+                        `Assalamu'alaikum Warahmatullahi Wabarakatuh`;
+                    
+                    // Set the text to be typed
+                    fullText = `Sayangku, Indras... Di hari istimewa ini, aku ingin kamu tahu bahwa kamu adalah segalanya bagiku. Kamu bukan hanya istriku, tapi juga sahabat terbaik dan cinta yang tak akan pernah pudar. Terima kasih sudah memilih untuk berjalan bersamaku dan membangun kebahagiaan bersama. Selamat ulang tahun, cinta hidupku. Semoga Allah selalu melindungimu dan memberikan segala yang terbaik untukmu. I love you more than words can say... 💜✨`;
+                }, 500);
+            } else {
+                document.getElementById('btnStart').classList.remove('hidden');
+            }
+        }
+
+        // Code Validation Function
+        function validateCode() {
+            const input = document.getElementById('codeInput');
+            const errorMsg = document.getElementById('codeErrorMessage');
+            const hintDiv = document.getElementById('codeHint');
+            const attemptsDiv = document.getElementById('codeAttempts');
+            const userCode = input.value.trim().toUpperCase();
+            
+            // Check if input is empty
+            if (!userCode) {
+                input.classList.add('error');
+                errorMsg.textContent = 'Isi dulu kodenya ya! 😊';
+                setTimeout(() => input.classList.remove('error'), 500);
+                return;
+            }
+            
+            // Check if code is correct
+            if (userCode === SECRET_CODE) {
+                input.classList.remove('error');
+                input.classList.add('success');
+                errorMsg.textContent = '';
+                isCodeValidated = true;
+                
+                // Success animation
+                Swal2.fire({
+                    title: 'Yeay! Kamu berhasil! 🎉',
+                    text: 'Kode benar! Sekarang kamu bisa baca pesannya~',
+                    icon: 'success',
+                    confirmButtonText: 'Lanjut!',
+                    timer: 2000
+                }).then(() => {
+                    // Hide modal and show message card
+                    document.getElementById('codeModalOverlay').classList.remove('show');
+                    showMessageCard();
+                });
+                
+                return;
+            }
+            
+            // Wrong code
+            codeAttempts++;
+            input.classList.add('error');
+            input.value = '';
+            
+            // Show error message
+            const messageIndex = Math.min(codeAttempts - 1, errorMessages.length - 1);
+            errorMsg.textContent = errorMessages[messageIndex];
+            
+            // Show hint after 2 attempts
+            if (codeAttempts >= 2) {
+                hintDiv.classList.add('show');
+            }
+            
+            // Update attempts counter
+            const remaining = MAX_ATTEMPTS - codeAttempts;
+            if (remaining > 0) {
+                attemptsDiv.textContent = `Sisa percobaan: ${remaining}x`;
+            } else {
+                attemptsDiv.textContent = 'Udah habis percobaannya 😅';
+                // Optionally disable input after max attempts
+                // input.disabled = true;
+                // document.getElementById('codeSubmitBtn').disabled = true;
+            }
+            
+            setTimeout(() => input.classList.remove('error'), 500);
+        }
+        
+        // Allow Enter key to submit code
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeInput = document.getElementById('codeInput');
+            if (codeInput) {
+                codeInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        validateCode();
+                    }
+                });
+            }
+        });
+        
+        // Function to show message card (extracted for reuse)
+        function showMessageCard() {
+            // Play notification sound and music
+            document.getElementById('notifSound').play();
+            
+            // Play background music
+            const audio = document.getElementById('bgAudio');
+            audio.volume = 0.3;
+            audio.play().catch(e => console.log('Audio autoplay prevented'));
+            
+            // Show message card
+            setTimeout(() => {
+                document.getElementById('notif2').style.display = 'none';
+                document.getElementById('messageCard').classList.add('show');
+                
+                // Scroll to message card
+                document.getElementById('messageCard').scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+                
+                // Start typing animation after card is shown
+                setTimeout(() => {
+                    typeWriter();
+                }, 800);
+            }, 300);
+        }
+
+        // Open message card - Modified to show code validation modal
+        document.getElementById('btnOpen').addEventListener('click', function() {
+            document.getElementById('notif2').classList.remove('blink');
+            document.getElementById('btnOpen').classList.add('hidden');
+            
+            // Show code validation modal instead of directly showing message
+            document.getElementById('codeModalOverlay').classList.add('show');
+            
+            // Focus on input
+            setTimeout(() => {
+                document.getElementById('codeInput').focus();
+            }, 300);
+        });
+
+        // Create snowflakes animation
+        function createSnowflakes() {
+            const snowContainer = document.getElementById('snowContainer');
+            const snowflakes = ['❄', '❅', '❆', '✻', '✼', '❉', '✺'];
+            const numberOfFlakes = 50;
+
+            for (let i = 0; i < numberOfFlakes; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDelay = Math.random() * 10 + 's';
+                snowflake.style.fontSize = (Math.random() * 1.5 + 0.5) + 'em';
+                snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+                snowContainer.appendChild(snowflake);
+            }
+        }
+
+        // Send WhatsApp
+        function sendWhatsApp() {
+            const message = `Assalamu'alaikum Sayang! 
+
+Makasih banyak ya buat ucapan ulang tahunnya. Aku ${userName} udah baca pesan cintamu. 
+
+Semoga Allah SWT selalu meridhoi kita dan memberkahi rumah tangga kita.
+
+I love you! 💜`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const waUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            
+            window.open(waUrl, '_blank');
+        }
+
+        // Photo Gallery Functions
+        let currentSlideIndex = 0;
+        let galleryAutoplayInterval;
+
+        // Initialize gallery dots dynamically
+        function initGalleryDots() {
+            const slides = document.querySelectorAll('.gallery-slide');
+            const dotsContainer = document.getElementById('galleryDots');
+            dotsContainer.innerHTML = '';
+            
+            slides.forEach((_, index) => {
+                const dot = document.createElement('span');
+                dot.className = 'gallery-dot' + (index === 0 ? ' active' : '');
+                dot.onclick = () => currentSlide(index + 1);
+                dotsContainer.appendChild(dot);
+            });
+        }
+
+        function showSlide(index) {
+            const slides = document.querySelectorAll('.gallery-slide');
+            const dots = document.querySelectorAll('.gallery-dot');
+            
+            if (index >= slides.length) {
+                currentSlideIndex = 0;
+            } else if (index < 0) {
+                currentSlideIndex = slides.length - 1;
+            } else {
+                currentSlideIndex = index;
+            }
+            
+            // Hide all slides
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            // Show current slide
+            slides[currentSlideIndex].classList.add('active');
+            if (dots[currentSlideIndex]) {
+                dots[currentSlideIndex].classList.add('active');
+            }
+            
+            // Update counter
+            document.getElementById('galleryCounter').textContent = `${currentSlideIndex + 1} / ${slides.length}`;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlideIndex + direction);
+            // Reset autoplay when manually changing slides
+            stopGalleryAutoplay();
+            startGalleryAutoplay();
+        }
+
+        function currentSlide(index) {
+            showSlide(index - 1);
+            // Reset autoplay when clicking dots
+            stopGalleryAutoplay();
+            startGalleryAutoplay();
+        }
+
+        function startGalleryAutoplay() {
+            // Initialize dots first
+            initGalleryDots();
+            
+            galleryAutoplayInterval = setInterval(() => {
+                showSlide(currentSlideIndex + 1);
+            }, 4000); // Change slide every 4 seconds
+            
+            // Create floating hearts
+            createFloatingHearts();
+        }
+
+        function stopGalleryAutoplay() {
+            if (galleryAutoplayInterval) {
+                clearInterval(galleryAutoplayInterval);
+            }
+        }
+
+        // Create floating hearts animation
+        function createFloatingHearts() {
+            const photoGallery = document.getElementById('photoGallery');
+            const hearts = ['💕', '💖', '💗', '💓', '💝', '❤️', '💘'];
+            
+            setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart';
+                heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 2 + 's';
+                heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+                photoGallery.appendChild(heart);
+                
+                // Remove heart after animation
+                setTimeout(() => {
+                    heart.remove();
+                }, 6000);
+            }, 800);
+        }
+    </script>
+</body>
+</html>
