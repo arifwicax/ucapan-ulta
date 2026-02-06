@@ -1360,6 +1360,18 @@
                         You're my everything... 💜✨
                     </p>
 
+                    <!-- Special Gift Info -->
+                    <div class="highlight" id="giftInfo" style="display: none; margin-top: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 25px; border-radius: 15px; text-align: center;">
+                        <h3 style="margin-bottom: 15px; font-size: 1.4rem;">🎁 Kado Spesial Untukmu</h3>
+                        <p style="margin-bottom: 10px; font-size: 1.1rem;">Ada kado yang sedang dalam perjalanan menuju ke tanganmu, Sayangku! 💝</p>
+                        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 10px; margin: 15px 0;">
+                            <p style="font-size: 0.9rem; margin-bottom: 5px;">📦 Nomor Resi JNE:</p>
+                            <p style="font-size: 1.5rem; font-weight: bold; letter-spacing: 2px; font-family: monospace;">CM29350463662</p>
+                        </div>
+                        <p style="font-size: 0.95rem; margin-top: 15px;">Track paketmu di: <a href="https://www.jne.co.id/id/tracking/trace" target="_blank" style="color: #ffd700; text-decoration: underline;">JNE Tracking</a></p>
+                        <p style="font-size: 0.9rem; margin-top: 10px; font-style: italic;">Semoga kadonya cepat sampai dan kamu suka! 🥰</p>
+                    </div>
+
                     <!-- Photo Gallery -->
                     <div class="photo-gallery" id="photoGallery" style="display: none;">
                         <h3 class="gallery-title">� Kenangan Terindah Kita Bersama 💕</h3>
@@ -1479,7 +1491,7 @@
         let typingIndex = 0;
         let typingSpeed = 80;
         let fullText = '';
-        const targetDate = new Date('2026-02-07T00:00:00').getTime();
+        const targetDate = new Date('2026-02-05T00:00:00').getTime();
         let countdownInterval;
         let isGiftUnlocked = false;
         
@@ -1539,13 +1551,16 @@
                             setTimeout(() => {
                                 document.getElementById('thankYouText').style.display = 'block';
                                 setTimeout(() => {
-                                    // Show photo gallery
-                                    document.getElementById('photoGallery').style.display = 'block';
-                                    startGalleryAutoplay();
+                                    // Show gift info with tracking number
+                                    document.getElementById('giftInfo').style.display = 'block';
                                     setTimeout(() => {
-                                        document.getElementById('teamSignature').style.display = 'block';
-                                        // Show WhatsApp button last and start snow animation
+                                        // Show photo gallery
+                                        document.getElementById('photoGallery').style.display = 'block';
+                                        startGalleryAutoplay();
                                         setTimeout(() => {
+                                            document.getElementById('teamSignature').style.display = 'block';
+                                            // Show WhatsApp button last and start snow animation
+                                            setTimeout(() => {
                                             document.getElementById('waButtonContainer').style.display = 'block';
                                             createSnowflakes();
                                         }, 500);
