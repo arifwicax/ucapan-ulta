@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan untuk Indras Widanti - WORKING</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+        
+        .clock {
+            font-size: 4rem;
+            margin: 20px 0;
+        }
+        
+        .gift {
+            font-size: 8rem;
+            margin: 30px 0;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .gift:hover {
+            transform: scale(1.1);
+        }
+        
+        .message {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 20px auto;
+            max-width: 600px;
+            display: none;
+        }
+        
+        .message.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>💜 Ucapan Spesial 💜</h1>
+    <div class="clock" id="clock">00:00</div>
+    <p id="date">Loading...</p>
+    
+    <div class="gift" onclick="openMessage()">🎁</div>
+    <p>Klik kado untuk membuka pesan!</p>
+    
+    <div class="message" id="message">
+        <h2>Untuk: Indras Widanti - My Love 💜</h2>
+        <p>Sayangku, di hari istimewa ini aku ingin kamu tahu bahwa kamu adalah segalanya bagiku. Selamat ulang tahun! Semoga Allah selalu melindungimu dan memberikan segala yang terbaik untukmu.</p>
+        
+        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; border-radius: 10px; margin: 20px 0;">
+            <h3>🎁 Kado Spesial Untukmu</h3>
+            <p><strong>📦 Nomor Resi JNE:</strong></p>
+            <p style="font-size: 1.5rem; font-family: monospace;">CM29350463662</p>
+            <p>Track paketmu di: <a href="https://www.jne.co.id/id/tracking/trace" target="_blank" style="color: #ffd700;">JNE Tracking</a></p>
+        </div>
+        
+        <p>I love you more than words can say... 💜✨</p>
+        <button onclick="sendWhatsApp()">Kirim Konfirmasi via WhatsApp</button>
+    </div>
+
+    <script>
+        console.log('✅ Simple version loaded!');
+        
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'});
+            document.getElementById('clock').textContent = time;
+        }
+        
+        // Date  
+        function updateDate() {
+            const now = new Date();
+            const date = now.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                day: 'numeric', 
+                month: 'long',
+                year: 'numeric'
+            });
+            document.getElementById('date').textContent = date;
+        }
+        
+        // Show message
+        function openMessage() {
+            console.log('🎁 Gift clicked!');
+            document.getElementById('message').classList.add('show');
+        }
+        
+        // WhatsApp
+        function sendWhatsApp() {
+            console.log('📱 WhatsApp clicked!');
+            const message = 'Assalamu\'alaikum Sayang! Makasih banyak ya buat ucapan ulang tahunnya dan info tracking number-nya! I love you! 💜';
+            const url = 'https://wa.me/6285213081309?text=' + encodeURIComponent(message);
+            window.open(url, '_blank');
+        }
+        
+        // Initialize
+        console.log('🚀 Starting app...');
+        updateClock();
+        updateDate();
+        setInterval(updateClock, 1000);
+        console.log('✅ App ready!');
+    </script>
+</body>
+</html>

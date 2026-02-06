@@ -17,7 +17,7 @@ Website ucapan ulang tahun romantis dengan tema interaktif dan animasi menarik. 
 - **Snow Animation** - Efek salju animasi yang indah
 - **Islamic Touch** - Ayat Al-Quran (QS. Luqman: 12) dan doa-doa Islami
 - **Responsive Design** - Optimal untuk mobile dan desktop
-
+ß
 ## 🛠️ Teknologi yang Digunakan
 
 - **HTML5** - Struktur halaman
